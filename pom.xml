@@ -1,0 +1,89 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.example</groupId>
+  <artifactId>MavenJemterDemo</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>MavenJemterDemo</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <maven.compiler.source>20</maven.compiler.source>
+    <maven.compiler.target>20</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.lazerycode.jmeter</groupId>
+        <artifactId>jmeter-maven-plugin</artifactId>
+        <version>3.8.0</version>
+        <executions>
+          <!-- Generate JMeter configuration -->
+          <execution>
+            <id>configuration</id>
+            <goals>
+              <goal>configure</goal>
+            </goals>
+          </execution>
+          <!-- Run JMeter tests -->
+          <execution>
+            <id>jmeter-tests</id>
+            <goals>
+              <goal>jmeter</goal>
+            </goals>
+          </execution>
+          <!-- Fail build on errors in test -->
+          <execution>
+            <id>jmeter-check-results</id>
+            <goals>
+              <goal>results</goal>
+            </goals>
+          </execution>
+        </executions>
+<!--        <configuration>-->
+<!--          <testPlanLibraries>-->
+<!--            <artifact>com.blazemeter:jmeter-plugins-directory-listing:0.3</artifact>-->
+<!--          </testPlanLibraries>-->
+<!--        </configuration>-->
+        <configuration>
+
+          <testFilesIncluded>
+            <jMeterTestFile>CreateKlassDemo.jmx</jMeterTestFile>
+          </testFilesIncluded>
+
+          <!-- Omit time stamp in test results (optional) -->
+          <testResultsTimestamp>false</testResultsTimestamp>
+
+          <!-- Declare user properties -->
+          <propertiesUser>
+            <threads>${threads}</threads>
+            <rampUp>${rampUp}</rampUp>
+            <loopCount>${loopCount}</loopCount>
+          </propertiesUser>
+
+          <customPropertiesFiles>
+            <file>./src/test/jmeter/prod_user_data.csv</file>
+          </customPropertiesFiles>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.10.0</version>
+          </dependency>
+          <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M5</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
+</project>
